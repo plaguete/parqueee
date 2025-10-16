@@ -1,0 +1,181 @@
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Baloo 2', cursive;
+}
+
+body {
+    background-color: #f0fbe3;
+    color: #2f4f2f;
+}
+
+/* Header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    background: linear-gradient(90deg, #9be15d, #00e3ae);
+    border-bottom: 4px solid #2f4f2f;
+}
+
+header .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+header .logo img {
+    height: 50px;
+}
+
+header h1 {
+    font-size: 24px;
+    color: #2f4f2f;
+}
+
+header nav a {
+    margin: 0 12px;
+    text-decoration: none;
+    color: #2f4f2f;
+    font-weight: 600;
+    font-size: 16px;
+    transition: transform 0.2s;
+}
+
+header nav a:hover {
+    transform: scale(1.1);
+}
+
+header nav .btn-admin {
+    background-color: #ff914d;
+    padding: 6px 14px;
+    border-radius: 8px;
+}
+
+/* Banner */
+.banner {
+    background: url("images/banner.jpg") center/cover no-repeat;
+    color: #2f4f2f;
+    text-align: center;
+    padding: 100px 20px;
+}
+
+.banner h2 {
+    font-size: 32px;
+    margin-bottom: 15px;
+}
+
+.banner p {
+    font-size: 18px;
+}
+
+.banner .btn {
+    background-color: #ffcc29;
+    color: #2f4f2f;
+    padding: 12px 25px;
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: bold;
+    display: inline-block;
+    margin-top: 20px;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.banner .btn:hover {
+    background-color: #ffa931;
+}
+
+/* Trilhas */
+.trilhas {
+    padding: 50px 20px;
+    text-align: center;
+}
+
+.trilhas h2 {
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.sub-text {
+    font-size: 16px;
+    margin-bottom: 30px;
+    color: #4d4d4d;
+}
+
+/* Cards de Árvores */
+.arvores-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 25px;
+}
+
+.arvore-card {
+    background-color: #fff7d1;
+    width: 250px;
+    border-radius: 15px;
+    box-shadow: 0 5px 12px rgba(0,0,0,0.15);
+    padding: 15px;
+    text-align: center;
+    transition: transform 0.3s;
+}
+
+.arvore-card:hover {
+    transform: scale(1.05) rotate(-1deg);
+}
+
+.arvore-card img {
+    width: 100%;
+    border-radius: 12px;
+}
+
+.arvore-card h3 {
+    margin: 12px 0;
+    color: #2f4f2f;
+    font-size: 20px;
+}
+
+.arvore-card p {
+    font-size: 14px;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.arvore-card a {
+    background-color: #2f7f2f;
+    color: white;
+    padding: 8px 14px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.arvore-card a:hover {
+    background-color: #228b22;
+}
+
+/* Footer */
+footer {
+    background: linear-gradient(90deg, #9be15d, #00e3ae);
+    color: #2f4f2f;
+    text-align: center;
+    padding: 20px;
+    margin-top: 50px;
+    font-weight: bold;
+}
+
+/* Responsividade */
+@media(max-width: 768px) {
+    header {
+        flex-direction: column;
+    }
+    .arvores-container {
+        flex-direction: column;
+        align-items: center;
+    }
+}

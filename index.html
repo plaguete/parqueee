@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parque Lagoa do Guapé</title>
+    <style>
+        /* Estilos base do Windows XP */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            font-family: 'Tahoma', sans-serif;
+        }
+
+        body, html {
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+            user-select: none;
+            background-color: #008080;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23008080"/><path d="M0,0 L100,100 M100,0 L0,100" stroke="rgba(0,0,0,0.05)" stroke-width="1"/></svg>');
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Barra de tarefas */
+        .taskbar {
+            height: 30px;
+            background: linear-gradient(to bottom, #245ed1, #1e4cb0);
+            border-top: 1px solid #5a7edc;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 5px;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .start-button {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: white;
+            font-weight: bold;
+            font-style: italic;
+            font-size: 16px;
+            padding: 3px 15px 3px 10px;
+            background: linear-gradient(to bottom, #3eb449, #287a38);
+            border: 1px solid #339933;
+            border-radius: 10px 3px 3px 10px;
+            cursor: pointer;
+            box-shadow: 1px 1px 2px rgba(0,0,0,0.4);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .start-button:hover {
+            background: linear-gradient(to bottom, #4cd95a, #309444);
+        }
+
+        .start-icon {
+            width: 20px;
+            height: 20px;
+        }
+
+        .taskbar-center {
+            display: flex;
+            gap: 5px;
+        }
+
+        .taskbar-program {
+            padding: 2px 10px;
+            background: linear-gradient(to bottom, #468ee5, #3168bc);
+            color: white;
+            border: 1px solid #2a58a5;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 13px;
+            box-shadow: inset 0px 1px 1px rgba(255, 255, 255, 0.4);
+        }
+
+        .taskbar-program.active {
+            background: linear-gradient(to top, #468ee5, #3168bc);
+            box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .taskbar-right {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: white;
+            font-size: 12px;
+            padding: 3px 8px;
+            background: linear-gradient(to bottom, #1e90ff, #1c86ee);
+            border: 1px solid #1874cd;
+            border-radius: 3px;
+            box-shadow: inset 1px 1px 1px rgba(255, 255, 255, 0.4);
+        }
+
+        /* Área de trabalho */
+        .desktop {
+            flex: 1;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 30px;
+            background-image: url('https://external-preview.redd.it/r6g38aXSaQWtd1KxwJbQ-Fs5jtSVDxX3wtLHJEdqixw.jpg?width=1080&crop=smart&auto=webp&s=87a2c94cb3e1561e2b6abd467ea68d81b9901720');
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Ícones da área de trabalho */
+        .desktop-icons {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            align-items: flex-start;
+        }
+
+        .desktop-icon {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 80px;
+            cursor: pointer;
+            text-align: center;
+            padding: 5px;
+            border: 1px solid transparent;
+            border-radius: 3px;
+            transition: all 0.2s ease;
+        }
+
+        .desktop-icon:hover {
+            background-color: rgba(45, 136, 255, 0.3);
+        }
+
+        .desktop-icon.selected, .desktop-icon:active {
+            background-color: rgba(45, 136, 255, 0.5);
+            border: 1px dotted rgba(255, 255, 255, 0.8);
+        }
+
+        .desktop-icon-image {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.5));
+        }
+
+        .desktop-icon-image img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .desktop-icon span {
+            font-size: 13px;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+        }
+        
+        /* Menu Iniciar */
+        .start-menu {
+            position: fixed;
+            bottom: 30px;
+            left: 3px;
+            width: 420px;
+            border: 1px solid #083bda;
+            border-radius: 5px;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+            display: none;
+            z-index: 1001;
+            overflow: hidden;
+            background-color: #fff;
+        }
+        
+        .start-menu-header {
+            background: linear-gradient(to bottom, #1d68f1, #1855c5 50%, #1750bc 50%, #154ab2);
+            padding: 8px 10px;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .start-menu-header img {
+            width: 40px;
+            height: 40px;
+            border: 2px solid white;
+            border-radius: 4px;
+        }
+
+        .start-menu-body {
+            display: flex;
+        }
+
+        .start-menu-left {
+            width: 50%;
+            background-color: white;
+            padding: 5px 0;
+            border-right: 1px solid #d3d3d3;
+        }
+        
+        .start-menu-right {
+            width: 50%;
+            background-color: #d6e8ff;
+            padding: 5px 0;
+        }
+
+        .start-menu-item {
+            padding: 6px 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            color: #000;
+        }
+
+        .start-menu-item:hover {
+            background-color: #316ac5;
+            color: white;
+        }
+        
+        .start-menu-item.separator {
+            margin: 5px 0;
+            height: 1px;
+            background-color: #c0c0c0;
+            padding: 0;
+        }
+
+        .start-menu-item img {
+            width: 32px;
+            height: 32px;
+        }
+        
+        .start-menu-right .start-menu-item img {
+             width: 24px;
+             height: 24px;
+        }
+
+        .start-menu-footer {
+            padding: 8px 10px;
+            background: linear-gradient(to bottom, #1d68f1, #1855c5 50%, #1750bc 50%, #154ab2);
+            text-align: right;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .shutdown-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            color: white;
+            font-size: 13px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+        
+        .shutdown-option img {
+            width: 20px;
+            height: 20px;
+        }
+
+        .shutdown-option:hover span {
+             text-decoration: underline;
+        }
+
+        /* Janelas */
+        .window {
+            position: absolute;
+            background-color: #ece9d8;
+            border: 1px solid #083bda;
+            border-radius: 6px 6px 0 0;
+            box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+            min-width: 300px;
+            z-index: 100;
+            display: none;
+            overflow: hidden;
+        }
+
+        .window.active {
+            display: block;
+        }
+
+        .title-bar {
+            background: linear-gradient(to right, #0055e5, #3b92f7);
+            padding: 3px 5px 3px 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: move;
+        }
+
+        .window-title {
+            color: white;
+            font-weight: bold;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .window-icon {
+            width: 16px;
+            height: 16px;
+        }
+
+        .window-controls {
+            display: flex;
+            gap: 3px;
+        }
+
+        .window-control {
+            width: 21px;
+            height: 21px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: "Marlett", "Arial", sans-serif;
+            font-size: 14px;
+            cursor: pointer;
+            background: linear-gradient(to bottom, #6098f8, #3b75d5);
+            border: 1px solid #2a58a5;
+            color: white;
+            border-radius: 2px;
+        }
+        
+        .close-btn {
+            background: linear-gradient(to bottom, #f88080, #e54b4b);
+        }
+
+        .window-content {
+            padding: 15px;
+            color: #000;
+            overflow: auto;
+            max-height: 400px;
+        }
+
+        /* Modal de desligar */
+        .shutdown-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .shutdown-box {
+            width: 350px;
+            background-color: #ece9d8;
+            border-top: 2px solid #ffffff;
+            border-left: 2px solid #ffffff;
+            border-right: 2px solid #808080;
+            border-bottom: 2px solid #808080;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .shutdown-box h2 {
+           font-size: 16px;
+           margin-bottom: 15px;
+        }
+
+        .shutdown-options {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .xp-button {
+            padding: 6px 15px;
+            background: linear-gradient(to bottom, #ece9d8, #d4d0c8);
+            border: 1px solid #ffffff;
+            border-right-color: #808080;
+            border-bottom-color: #808080;
+            cursor: pointer;
+            font-family: 'Tahoma', sans-serif;
+            font-size: 12px;
+            box-shadow: inset -1px -1px 0px #808080;
+        }
+
+        /* Estilos para formulários */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #0a246a;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 6px;
+            border: 1px solid #7f9db9;
+            background-color: white;
+            font-family: 'Tahoma', sans-serif;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            justify-content: flex-end;
+        }
+
+        .xp-button.delete {
+            background: linear-gradient(to bottom, #ff8a87, #d64b3f);
+            color: white;
+        }
+
+        /* Estilos para mensagens */
+        .message {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 3px;
+            font-size: 12px;
+            display: none;
+        }
+        
+        .message.success {
+            background-color: #dff2bf;
+            color: #4f8a10;
+            border: 1px solid #4f8a10;
+            display: block;
+        }
+        
+        .message.error {
+            background-color: #ffbaba;
+            color: #d8000c;
+            border: 1px solid #d8000c;
+            display: block;
+        }
+
+        /* Estilos específicos para a janela do Parque */
+        .parque-content {
+            padding: 15px;
+            height: calc(100% - 70px);
+            overflow-y: auto;
+            background: white;
+        }
+
+        .parque-header {
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #0a246a;
+            padding-bottom: 15px;
+        }
+
+        .parque-logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 10px;
+            border-radius: 10px;
+            background: url('https://i.pinimg.com/1200x/6b/28/31/6b28318c2ee308fd6e5bd3f29d671cc8.jpg') center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+        }
+
+        .parque-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .info-card {
+            background: #f8f9fa;
+            border: 1px solid #d4d0c8;
+            padding: 10px;
+            border-radius: 3px;
+        }
+
+        .info-card h3 {
+            color: #0a246a;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        .parque-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .parque-button {
+            padding: 8px 15px;
+            background: linear-gradient(to bottom, #1d68f1, #154ab2);
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-family: 'Tahoma', sans-serif;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .parque-button:hover {
+            background: linear-gradient(to bottom, #2a75ff, #1a5bd4);
+        }
+
+        .parque-button img {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Estilo para a barra de ferramentas */
+        .parque-toolbar {
+            display: flex;
+            align-items: center;
+            padding: 5px 10px;
+            background: #f0f0f0;
+            border-bottom: 1px solid #d4d0c8;
+            gap: 5px;
+        }
+
+        .parque-button-toolbar {
+            padding: 4px 8px;
+            background: linear-gradient(to bottom, #ece9d8, #d4d0c8);
+            border: 1px solid #ffffff;
+            border-right-color: #808080;
+            border-bottom-color: #808080;
+            cursor: pointer;
+            font-family: 'Tahoma', sans-serif;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .parque-button-toolbar img {
+            width: 16px;
+            height: 16px;
+        }
+
+        .arvores-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .arvore-item {
+            background: #f8f9fa;
+            border: 1px solid #d4d0c8;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .arvore-item:hover {
+            background: #e9ecef;
+            border-color: #0a246a;
+        }
+
+        .arvore-item img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            margin-bottom: 8px;
+            border: 1px solid #d4d0c8;
+        }
+
+        .arvore-item h3 {
+            color: #0a246a;
+            font-size: 13px;
+            margin-bottom: 5px;
+        }
+
+        .arvore-item p {
+            color: #000;
+            font-size: 11px;
+        }
+
+        .rainbow {
+            animation: rainbow 0.5s linear infinite;
+        }
+
+        @keyframes rainbow {
+            0% { color: #f54242; }
+            25% { color: #f2bf3f; }
+            50% { color: #61eb3b; }
+            75% { color: #2895ed; }
+            100% { color: #f54242; }
+        }
+    </style>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-storage-compat.js"></script>
+    <script>
+        // Firebase configuration - substitua com suas próprias credenciais
+        const firebaseConfig = {
+            apiKey: "sua-api-key",
+            authDomain: "seu-projeto.firebaseapp.com",
+            projectId: "seu-projeto",
+            storageBucket: "seu-projeto.appspot.com",
+            messagingSenderId: "123456789",
+            appId: "sua-app-id"
+        };
+        
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        
+        // Initialize Cloud Firestore and get a reference to the service
+        const db = firebase.firestore();
+        const storage = firebase.storage();
+    </script>
+</head>
+<body>
+    <!-- Área de trabalho com ícones -->
+    <div class="desktop">
+        <div class="desktop-icons">
+            <div class="desktop-icon" onclick="openWindow('parque-window')">
+                <div class="desktop-icon-image">
+                    <img src="https://cdn-icons-png.flaticon.com/512/684/684809.png" alt="Parque Lagoa do Guapé">
+                </div>
+                <span>Parque Lagoa do Guapé</span>
+            </div>
+            <div class="desktop-icon" onclick="openWindow('arvores-window')">
+                <div class="desktop-icon-image">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2908/2908908.png" alt="Árvores">
+                </div>
+                <span>Árvores</span>
+            </div>
+            <div class="desktop-icon" onclick="openWindow('quiz-window')">
+                <div class="desktop-icon-image">
+                    <img src="https://cdn-icons-png.flaticon.com/512/4298/4298997.png" alt="Quiz">
+                </div>
+                <span>Quiz</span>
+            </div>
+            <div class="desktop-icon" onclick="openWindow('admin-window')">
+                <div class="desktop-icon-image">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2910/2910768.png" alt="Admin">
+                </div>
+                <span>Admin</span>
+            </div>
+        </div>
+
+        <!-- Janela do Parque Lagoa do Guapé -->
+        <div id="parque-window" class="window" style="top: 100px; left: 150px; width: 600px; height: 500px;">
+            <div class="title-bar">
+                <div class="window-title">
+                    <img class="window-icon" src="https://cdn-icons-png.flaticon.com/512/684/684809.png" alt="Parque Icon">
+                    <span>Parque Lagoa do Guapé</span>
+                </div>
+                <div class="window-controls">
+                    <div class="window-control">0</div>
+                    <div class="window-control">1</div>
+                    <div class="window-control close-btn" onclick="closeWindow('parque-window')">r</div>
+                </div>
+            </div>
+            
+            <div class="parque-content">
+                <div class="parque-header">
+                    <div class="parque-logo"></div>
+                    <h1 class="rainbow">Parque Municipal Luiz Balboni</h1>
+                    <p style="font-size: 14px; color: #666;">Bem-vindo ao Parque Lagoa do Guapé!</p>
+                </div>
+                
+                <div style="text-align: center; margin-top: 20px;">
+                    <p style="font-size: 13px; line-height: 1.4; margin-bottom: 20px;">
+                        Descubra as maravilhas da <b>Mata Atlântica</b> com histórias, imagens e curiosidades sobre as árvores do nosso parque!
+                    </p>
+                </div>
+                
+                <div class="parque-info">
+                    <div class="info-card">
+                        <h3>🌱 Sobre o Parque</h3>
+                        <p>O Parque Municipal Luiz Balboni é uma área de preservação ambiental com diversas espécies nativas da Mata Atlântica.</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>🌳 Biodiversidade</h3>
+                        <p>Abriga diversas espécies de árvores, animais e plantas, proporcionando um ambiente rico para educação ambiental.</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>🎮 Atividades</h3>
+                        <p>Oferecemos trilhas educativas, observação de aves e um quiz interativo sobre a flora local.</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>👥 Visitação</h3>
+                        <p>O parque está aberto ao público para visitação, escolas e grupos de estudo ambiental.</p>
+                    </div>
+                </div>
+                
+                <div class="parque-buttons">
+                    <button class="parque-button" onclick="openWindow('arvores-window')">
+                        <img src="https://cdn-icons-png.flaticon.com/512/2908/2908908.png" alt="Árvores">
+                        Explorar Árvores
+                    </button>
+                    <button class="parque-button" onclick="openWindow('quiz-window')">
+                        <img src="https://cdn-icons-png.flaticon.com/512/4298/4298997.png" alt="Quiz">
+                        Jogar Quiz
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Janela das Árvores (conteúdo será carregado pelo Firebase) -->
+        <div id="arvores-window" class="window" style="top: 120px; left: 200px; width: 650px; height: 500px;">
+            <div class="title-bar">
+                <div class="window-title">
+                    <img class="window-icon" src="https://cdn-icons-png.flaticon.com/512/2908/2908908.png" alt="Árvores Icon">
+                    <span>Árvores do Parque</span>
+                </div>
+                <div class="window-controls">
+                    <div class="window-control">0</div>
+                    <div class="window-control">1</div>
+                    <div class="window-control close-btn" onclick="closeWindow('arvores-window')">r</div>
+                </div>
+            </div>
+            
+            <div class="parque-toolbar">
+                <button class="parque-button-toolbar" onclick="alert('Filtrar por espécie')">
+                    <img src="https://cdn-icons-png.flaticon.com/512/992/992683.png" alt="Filtrar">
+                    Filtrar
+                </button>
+                <button class="parque-button-toolbar" onclick="alert('Buscar árvore')">
+                    <img src="https://cdn-icons-png.flaticon.com/512/622/622669.png" alt="Buscar">
+                    Buscar
+                </button>
+            </div>
+            
+            <div class="parque-content">
+                <h2 style="color: #0a246a; margin-bottom: 15px;">🌳 Conheça as Espécies</h2>
+                <p class="sub-text" style="margin-bottom: 15px;">Clique nas árvores para ver sua descrição e acessar o QR Code!</p>
+                
+                <div class="arvores-container" id="arvoresContainer">
+                    <!-- Conteúdo será carregado pelo Firebase -->
+                    <div style="text-align: center; padding: 20px;">
+                        <p>Carregando árvores do parque...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Janela do Quiz -->
+        <div id="quiz-window" class="window" style="top: 150px; left: 250px; width: 500px; height: 400px;">
+            <div class="title-bar">
+                <div class="window-title">
+                    <img class="window-icon" src="https://cdn-icons-png.flaticon.com/512/4298/4298997.png" alt="Quiz Icon">
+                    <span>Quiz do Parque</span>
+                </div>
+                <div class="window-controls">
+                    <div class="window-control">0</div>
+                    <div class="window-control">1</div>
+                    <div class="window-control close-btn" onclick="closeWindow('quiz-window')">r</div>
+                </div>
+            </div>
+            
+            <div class="parque-content">
+                <div style="text-align: center;">
+                    <h2 style="color: #0a246a; margin-bottom: 20px;">🎮 Quiz Educativo</h2>
+                    <p style="margin-bottom: 25px;">Teste seus conhecimentos sobre a Mata Atlântica e as espécies do parque!</p>
+                    
+                    <div style="background: #f8f9fa; padding: 20px; border-radius: 5px; margin-bottom: 20px;">
+                        <h3 style="margin-bottom: 15px;">Pergunta 1 de 5</h3>
+                        <p style="font-weight: bold; margin-bottom: 15px;">Qual é a árvore símbolo do Brasil?</p>
+                        
+                        <div style="display: flex; flex-direction: column; gap: 10px;">
+                            <button class="parque-button-toolbar" style="width: 100%; text-align: left;">A) Ipê Amarelo</button>
+                            <button class="parque-button-toolbar" style="width: 100%; text-align: left;">B) Pau-Brasil</button>
+                            <button class="parque-button-toolbar" style="width: 100%; text-align: left;">C) Jatobá</button>
+                            <button class="parque-button-toolbar" style="width: 100%; text-align: left;">D) Figueira</button>
+                        </div>
+                    </div>
+                    
+                    <button class="parque-button" onclick="alert('Resposta enviada!')">
+                        <img src="https://cdn-icons-png.flaticon.com/512/190/190411.png" alt="Enviar">
+                        Enviar Resposta
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Janela do Admin -->
+        <div id="admin-window" class="window" style="top: 180px; left: 300px; width: 450px; height: 350px;">
+            <div class="title-bar">
+                <div class="window-title">
+                    <img class="window-icon" src="https://cdn-icons-png.flaticon.com/512/2910/2910768.png" alt="Admin Icon">
+                    <span>Área do Administrador</span>
+                </div>
+                <div class="window-controls">
+                    <div class="window-control">0</div>
+                    <div class="window-control">1</div>
+                    <div class="window-control close-btn" onclick="closeWindow('admin-window')">r</div>
+                </div>
+            </div>
+            
+            <div class="window-content">
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <h2 style="color:#0a246a;">Acesso Restrito</h2>
+                    <p>Esta área é exclusiva para administradores do parque.</p>
+                </div>
+                
+                <div class="form-group">
+                    <label for="admin-username">Usuário:</label>
+                    <input type="text" id="admin-username">
+                </div>
+                <div class="form-group">
+                    <label for="admin-password">Senha:</label>
+                    <input type="password" id="admin-password">
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="xp-button" onclick="alert('Login realizado!')">Entrar</button>
+                    <button class="xp-button" onclick="closeWindow('admin-window')">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Barra de tarefas -->
+    <div class="taskbar">
+        <div class="start-button" onclick="toggleStartMenu()">
+            <img class="start-icon" src="https://cdn-icons-png.flaticon.com/512/732/732068.png" alt="Start Icon">
+            <span>iniciar</span>
+        </div>
+        <div class="taskbar-center">
+            <div class="taskbar-program" onclick="openWindow('parque-window')">Parque Lagoa do Guapé</div>
+            <div class="taskbar-program" onclick="openWindow('arvores-window')">Árvores</div>
+        </div>
+        <div class="taskbar-right">
+            <span id="clock">14:30</span>
+        </div>
+    </div>
+
+    <!-- Menu Iniciar -->
+    <div class="start-menu" id="start-menu">
+        <div class="start-menu-header">
+            <img src="https://cdn-icons-png.flaticon.com/512/684/684809.png" alt="Parque Logo">
+            <h2>Parque Lagoa do Guapé</h2>
+        </div>
+        <div class="start-menu-body">
+            <div class="start-menu-left">
+                <div class="start-menu-item" onclick="openWindow('parque-window'); hideStartMenu()">
+                    <img src="https://cdn-icons-png.flaticon.com/512/684/684809.png" alt="Parque">
+                    <span>Parque Lagoa do Guapé</span>
+                </div>
+                 <div class="start-menu-item" onclick="openWindow('arvores-window'); hideStartMenu()">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2908/2908908.png" alt="Árvores">
+                    <span>Árvores</span>
+                </div>
+                <div class="start-menu-item" onclick="openWindow('quiz-window'); hideStartMenu()">
+                    <img src="https://cdn-icons-png.flaticon.com/512/4298/4298997.png" alt="Quiz">
+                    <span>Quiz</span>
+                </div>
+                <div class="start-menu-item separator"></div>
+                <div class="start-menu-item" onclick="openWindow('admin-window'); hideStartMenu()">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2910/2910768.png" alt="Admin">
+                    <span>Área do Admin</span>
+                </div>
+            </div>
+            <div class="start-menu-right">
+                <div class="start-menu-item">
+                    <img src="https://cdn-icons-png.flaticon.com/512/684/684831.png" alt="Documentos">
+                    <span>Documentos</span>
+                </div>
+                 <div class="start-menu-item">
+                    <img src="https://cdn-icons-png.flaticon.com/512/684/684859.png" alt="Imagens">
+                    <span>Imagens</span>
+                </div>
+                <div class="start-menu-item">
+                    <img src="https://cdn-icons-png.flaticon.com/512/684/684827.png" alt="Músicas">
+                    <span>Músicas</span>
+                </div>
+                <div class="start-menu-item">
+                    <img src="https://cdn-icons-png.flaticon.com/512/684/684828.png" alt="Computador">
+                    <span>Meu Computador</span>
+                </div>
+                <div class="start-menu-item separator"></div>
+                <div class="start-menu-item">
+                    <img src="https://cdn-icons-png.flaticon.com/512/684/684850.png" alt="Painel de Controle">
+                    <span>Painel de Controle</span>
+                </div>
+                 <div class="start-menu-item">
+                    <img src="https://cdn-icons-png.flaticon.com/512/684/684831.png" alt="Ajuda">
+                    <span>Ajuda e Suporte</span>
+                </div>
+                <div class="start-menu-item">
+                    <img src="https://cdn-icons-png.flaticon.com/512/684/684841.png" alt="Procurar">
+                    <span>Procurar</span>
+                </div>
+                <div class="start-menu-item">
+                    <img src="https://cdn-icons-png.flaticon.com/512/684/684857.png" alt="Executar">
+                    <span>Executar...</span>
+                </div>
+            </div>
+        </div>
+        <div class="start-menu-footer">
+            <div class="shutdown-option" onclick="showShutdownModal()">
+                <img src="https://cdn-icons-png.flaticon.com/512/684/684843.png" alt="Log Off">
+                <span>Sair</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de desligar -->
+    <div class="shutdown-modal" id="shutdown-modal">
+        <div class="shutdown-box">
+            <h2>Sair do Sistema</h2>
+            <p>Deseja realmente sair do Parque Lagoa do Guapé?</p>
+            <div class="shutdown-options">
+                <button class="xp-button" onclick="logout()">Sim</button>
+                <button class="xp-button" onclick="hideShutdownModal()">Não</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Função para carregar árvores do Firebase
+        async function carregarArvores() {
+            try {
+                const arvoresContainer = document.getElementById('arvoresContainer');
+                
+                // Limpar conteúdo atual
+                arvoresContainer.innerHTML = '<div style="text-align: center; padding: 20px;"><p>Carregando árvores do parque...</p></div>';
+                
+                // Buscar árvores no Firestore
+                const querySnapshot = await db.collection('arvores').get();
+                
+                // Limpar container novamente
+                arvoresContainer.innerHTML = '';
+                
+                if (querySnapshot.empty) {
+                    arvoresContainer.innerHTML = '<div style="text-align: center; padding: 20px;"><p>Nenhuma árvore cadastrada ainda.</p></div>';
+                    return;
+                }
+                
+                // Adicionar cada árvore ao container
+                querySnapshot.forEach((doc) => {
+                    const arvore = doc.data();
+                    const arvoreItem = document.createElement('div');
+                    arvoreItem.className = 'arvore-item';
+                    arvoreItem.onclick = () => mostrarDetalhesArvore(arvore);
+                    
+                    arvoreItem.innerHTML = `
+                        <img src="${arvore.imagem || 'https://cdn-icons-png.flaticon.com/512/2908/2908908.png'}" alt="${arvore.nome}">
+                        <h3>${arvore.nome}</h3>
+                        <p>${arvore.especie || 'Espécie nativa'}</p>
+                    `;
+                    
+                    arvoresContainer.appendChild(arvoreItem);
+                });
+            } catch (error) {
+                console.error('Erro ao carregar árvores:', error);
+                document.getElementById('arvoresContainer').innerHTML = 
+                    '<div style="text-align: center; padding: 20px;"><p>Erro ao carregar árvores. Verifique o console.</p></div>';
+            }
+        }
+        
+        // Função para mostrar detalhes da árvore
+        function mostrarDetalhesArvore(arvore) {
+            alert(`Detalhes da ${arvore.nome}:\n\nEspécie: ${arvore.especie || 'Não informada'}\nDescrição: ${arvore.descricao || 'Sem descrição'}`);
+        }
+        
+        // Relógio na barra de tarefas
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            document.getElementById('clock').textContent = `${hours}:${minutes}`;
+        }
+
+        // Controle de janelas
+        function openWindow(windowId) {
+            const window = document.getElementById(windowId);
+            if(window) window.classList.add('active');
+            
+            document.querySelectorAll('.taskbar-program').forEach(program => {
+                program.classList.remove('active');
+            });
+            
+            const programButton = Array.from(document.querySelectorAll('.taskbar-program'))
+                .find(program => program.textContent === window.querySelector('.window-title span').textContent);
+            
+            if (programButton) {
+                programButton.classList.add('active');
+            }
+            
+            hideStartMenu();
+            makeWindowDraggable(windowId);
+            
+            // Se for a janela de árvores, carregar dados do Firebase
+            if (windowId === 'arvores-window') {
+                carregarArvores();
+            }
+        }
+
+        function closeWindow(windowId) {
+            const window = document.getElementById(windowId);
+            if(window) window.classList.remove('active');
+            
+            const programButton = Array.from(document.querySelectorAll('.taskbar-program'))
+                .find(program => program.textContent === window.querySelector('.window-title span').textContent);
+            
+            if (programButton) {
+                programButton.classList.remove('active');
+            }
+        }
+
+        // Menu Iniciar
+        function toggleStartMenu() {
+            const startMenu = document.getElementById('start-menu');
+            startMenu.style.display = startMenu.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function hideStartMenu() {
+            document.getElementById('start-menu').style.display = 'none';
+        }
+
+        // Fechar menu ao clicar fora dele
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.start-button') && !e.target.closest('.start-menu')) {
+                hideStartMenu();
+            }
+        });
+
+        // Modal de desligar
+        function showShutdownModal() {
+            document.getElementById('shutdown-modal').style.display = 'flex';
+            hideStartMenu();
+        }
+
+        function hideShutdownModal() {
+            document.getElementById('shutdown-modal').style.display = 'none';
+        }
+
+        function logout() {
+            alert("Obrigado por visitar o Parque Lagoa do Guapé!");
+            window.location.href = 'index.html';
+        }
+
+        // Função para tornar as janelas arrastáveis
+        function makeWindowDraggable(windowId) {
+            const windowElement = document.getElementById(windowId);
+            if (!windowElement) return;
+            const titleBar = windowElement.querySelector('.title-bar');
+            
+            let isDragging = false;
+            let currentX, currentY, initialX, initialY;
+            let xOffset = 0, yOffset = 0;
+            
+            titleBar.addEventListener("mousedown", dragStart);
+            document.addEventListener("mouseup", dragEnd);
+            document.addEventListener("mousemove", drag);
+
+            function dragStart(e) {
+                initialX = e.clientX - xOffset;
+                initialY = e.clientY - yOffset;
+                if (e.target === titleBar || titleBar.contains(e.target)) {
+                    isDragging = true;
+                }
+            }
+
+            function dragEnd(e) {
+                isDragging = false;
+            }
+
+            function drag(e) {
+                if (isDragging) {
+                    e.preventDefault();
+                    currentX = e.clientX - initialX;
+                    currentY = e.clientY - initialY;
+                    xOffset = currentX;
+                    yOffset = currentY;
+                    setTranslate(currentX, currentY, windowElement);
+                }
+            }
+
+            function setTranslate(xPos, yPos, el) {
+                el.style.transform = "translate3d(" + xPos + "px, " + yPos + "px, 0)";
+            }
+        }
+
+        // Inicialização
+        window.addEventListener('load', function() {
+            updateClock();
+            setInterval(updateClock, 60000);
+            
+            openWindow('parque-window');
+            
+            document.querySelectorAll('.window').forEach(window => {
+                makeWindowDraggable(window.id);
+            });
+        });
+    </script>
+</body>
+</html>
