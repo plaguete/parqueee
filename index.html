@@ -24,6 +24,53 @@
             background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23008080"/><path d="M0,0 L100,100 M100,0 L0,100" stroke="rgba(0,0,0,0.05)" stroke-width="1"/></svg>');
             display: flex;
             flex-direction: column;
+            transition: all 0.3s ease;
+        }
+
+        /* Modificadores de acessibilidade */
+        body.font-grande {
+            font-size: 1.2em;
+        }
+
+        body.font-muito-grande {
+            font-size: 1.5em;
+        }
+
+        body.alto-contraste {
+            background-color: #000000;
+            color: #ffffff;
+        }
+
+        body.alto-contraste .window {
+            background-color: #000000;
+            color: #ffffff;
+            border-color: #ffffff;
+        }
+
+        body.alto-contraste .window-content {
+            background-color: #000000;
+            color: #ffffff;
+        }
+
+        body.alto-contraste .title-bar {
+            background: linear-gradient(to right, #000000, #333333);
+        }
+
+        body.alto-contraste .taskbar {
+            background: linear-gradient(to bottom, #000000, #333333);
+        }
+
+        /* Filtros para daltonismo */
+        body.daltonismo-protanopia {
+            filter: url(#protanopia);
+        }
+
+        body.daltonismo-deuteranopia {
+            filter: url(#deuteranopia);
+        }
+
+        body.daltonismo-tritanopia {
+            filter: url(#tritanopia);
         }
 
         /* Barra de tarefas */
@@ -473,7 +520,7 @@
             height: 80px;
             margin: 0 auto 10px;
             border-radius: 10px;
-            background: url('https://i.pinimg.com/1200x/6b/28/31/6b28318c2ee308fd6e5bd3f29d671cc8.jpg') center/cover;
+            background: url('https://i.pinimg.com/1200x/df/9e/aa/df9eaa85a4191e477ab10373c1f6aea7.jpg') center/cover;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -612,32 +659,372 @@
             75% { color: #2895ed; }
             100% { color: #f54242; }
         }
+
+        /* Painel de Acessibilidade */
+        .acessibilidade-painel {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: #ece9d8;
+            border: 1px solid #083bda;
+            border-radius: 5px;
+            box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+            z-index: 1500;
+            width: 250px;
+            overflow: hidden;
+        }
+
+        .acessibilidade-header {
+            background: linear-gradient(to right, #0055e5, #3b92f7);
+            padding: 5px 10px;
+            color: white;
+            font-weight: bold;
+            font-size: 13px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .acessibilidade-content {
+            padding: 10px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .acessibilidade-opcao {
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #d4d0c8;
+        }
+
+        .acessibilidade-opcao:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .acessibilidade-opcao h3 {
+            font-size: 12px;
+            margin-bottom: 5px;
+            color: #0a246a;
+        }
+
+        .acessibilidade-botoes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .acessibilidade-btn {
+            padding: 4px 8px;
+            background: linear-gradient(to bottom, #ece9d8, #d4d0c8);
+            border: 1px solid #ffffff;
+            border-right-color: #808080;
+            border-bottom-color: #808080;
+            cursor: pointer;
+            font-family: 'Tahoma', sans-serif;
+            font-size: 11px;
+            flex: 1;
+            min-width: 60px;
+            text-align: center;
+        }
+
+        .acessibilidade-btn.active {
+            background: linear-gradient(to bottom, #1d68f1, #154ab2);
+            color: white;
+        }
+
+        .acessibilidade-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .toggle-btn {
+            width: 40px;
+            height: 20px;
+            background: #d4d0c8;
+            border-radius: 10px;
+            position: relative;
+            cursor: pointer;
+            border: 1px solid #808080;
+        }
+
+        .toggle-btn::after {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            background: white;
+            border-radius: 50%;
+            top: 1px;
+            left: 2px;
+            transition: all 0.3s;
+        }
+
+        .toggle-btn.ativo::after {
+            left: 21px;
+            background: #3eb449;
+        }
+
+        /* Botão flutuante de acessibilidade */
+        .acessibilidade-flutuante {
+            position: fixed;
+            bottom: 40px;
+            right: 10px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(to bottom, #3eb449, #287a38);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1499;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+            border: 1px solid #339933;
+        }
+
+        .acessibilidade-flutuante img {
+            width: 30px;
+            height: 30px;
+            filter: brightness(0) invert(1);
+        }
+
+        /* Área do VLibras */
+        .vlibras-container {
+            position: fixed;
+            bottom: 100px;
+            right: 10px;
+            z-index: 1498;
+        }
+
+        /* Indicador de leitura de texto */
+        .leitor-ativo {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            background: #3eb449;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 3px;
+            font-size: 12px;
+            z-index: 1501;
+            display: none;
+        }
+
+        /* Janela de boas-vindas */
+        .janela-boas-vindas {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #ece9d8;
+            border: 1px solid #083bda;
+            border-radius: 6px 6px 0 0;
+            box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+            width: 500px;
+            z-index: 2001;
+            overflow: hidden;
+        }
+
+        .boas-vindas-content {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .boas-vindas-content h2 {
+            color: #0a246a;
+            margin-bottom: 15px;
+        }
+
+        .boas-vindas-content p {
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .icone-acessibilidade {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .icone-acessibilidade img {
+            width: 80px;
+            height: 80px;
+        }
+
+        .dica-teclado {
+            background: #f0f0f0;
+            border: 1px solid #d4d0c8;
+            padding: 10px;
+            border-radius: 3px;
+            margin: 15px 0;
+            text-align: left;
+        }
+
+        .dica-teclado h4 {
+            color: #0a246a;
+            margin-bottom: 8px;
+        }
+
+        .dica-teclado ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .dica-teclado li {
+            margin-bottom: 5px;
+            font-size: 12px;
+        }
+
+        .dica-teclado kbd {
+            background: #ece9d8;
+            border: 1px solid #808080;
+            border-radius: 3px;
+            padding: 2px 5px;
+            font-family: 'Tahoma', sans-serif;
+            font-size: 11px;
+            box-shadow: 1px 1px 1px rgba(0,0,0,0.2);
+        }
     </style>
 
-    <!-- Firebase -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-storage-compat.js"></script>
-    <script>
-        // Firebase configuration - substitua com suas próprias credenciais
-        const firebaseConfig = {
-            apiKey: "sua-api-key",
-            authDomain: "seu-projeto.firebaseapp.com",
-            projectId: "seu-projeto",
-            storageBucket: "seu-projeto.appspot.com",
-            messagingSenderId: "123456789",
-            appId: "sua-app-id"
-        };
-        
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        
-        // Initialize Cloud Firestore and get a reference to the service
-        const db = firebase.firestore();
-        const storage = firebase.storage();
-    </script>
+    <!-- Filtros SVG para daltonismo (ocultos) -->
+    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="0" width="0" style="position:absolute">
+        <defs>
+            <!-- Filtro para Protanopia (vermelho-verde) -->
+            <filter id="protanopia">
+                <feColorMatrix type="matrix" values="0.567, 0.433, 0, 0, 0  0.558, 0.442, 0, 0, 0  0, 0.242, 0.758, 0, 0  0, 0, 0, 1, 0"></feColorMatrix>
+            </filter>
+            
+            <!-- Filtro para Deuteranopia (vermelho-verde) -->
+            <filter id="deuteranopia">
+                <feColorMatrix type="matrix" values="0.625, 0.375, 0, 0, 0  0.7, 0.3, 0, 0, 0  0, 0.3, 0.7, 0, 0  0, 0, 0, 1, 0"></feColorMatrix>
+            </filter>
+            
+            <!-- Filtro para Tritanopia (azul-amarelo) -->
+            <filter id="tritanopia">
+                <feColorMatrix type="matrix" values="0.95, 0.05, 0, 0, 0  0, 0.433, 0.567, 0, 0  0, 0.475, 0.525, 0, 0  0, 0, 0, 1, 0"></feColorMatrix>
+            </filter>
+        </defs>
+    </svg>
 </head>
 <body>
+    <!-- Indicador de leitura de texto -->
+    <div class="leitor-ativo" id="leitor-ativo">Leitor de texto ativo</div>
+
+    <!-- Botão flutuante de acessibilidade -->
+    <div class="acessibilidade-flutuante" onclick="toggleAcessibilidadePainel()">
+        <img src="https://cdn-icons-png.flaticon.com/512/3522/3522735.png" alt="Acessibilidade">
+    </div>
+
+    <!-- Painel de Acessibilidade -->
+    <div class="acessibilidade-painel" id="acessibilidade-painel" style="display: none;">
+        <div class="acessibilidade-header">
+            <span>Opções de Acessibilidade</span>
+            <div class="window-control close-btn" onclick="toggleAcessibilidadePainel()" style="width: 16px; height: 16px; font-size: 12px;">r</div>
+        </div>
+        <div class="acessibilidade-content">
+            <div class="acessibilidade-opcao">
+                <h3>Tamanho da Fonte</h3>
+                <div class="acessibilidade-botoes">
+                    <button class="acessibilidade-btn" onclick="alterarFonte('normal')" id="fonte-normal">Normal</button>
+                    <button class="acessibilidade-btn" onclick="alterarFonte('grande')" id="fonte-grande">Grande</button>
+                    <button class="acessibilidade-btn" onclick="alterarFonte('muito-grande')" id="fonte-muito-grande">Muito Grande</button>
+                </div>
+            </div>
+            
+            <div class="acessibilidade-opcao">
+                <h3>Daltonismo</h3>
+                <div class="acessibilidade-botoes">
+                    <button class="acessibilidade-btn" onclick="alterarDaltonismo('normal')" id="daltonismo-normal">Normal</button>
+                    <button class="acessibilidade-btn" onclick="alterarDaltonismo('protanopia')" id="daltonismo-protanopia">Protanopia</button>
+                    <button class="acessibilidade-btn" onclick="alterarDaltonismo('deuteranopia')" id="daltonismo-deuteranopia">Deuteranopia</button>
+                    <button class="acessibilidade-btn" onclick="alterarDaltonismo('tritanopia')" id="daltonismo-tritanopia">Tritanopia</button>
+                </div>
+            </div>
+            
+            <div class="acessibilidade-opcao">
+                <h3>Contraste</h3>
+                <div class="acessibilidade-toggle">
+                    <span>Alto Contraste</span>
+                    <div class="toggle-btn" id="toggle-contraste" onclick="alternarContraste()"></div>
+                </div>
+            </div>
+            
+            <div class="acessibilidade-opcao">
+                <h3>Leitor de Texto</h3>
+                <div class="acessibilidade-toggle">
+                    <span>Ativar Leitor</span>
+                    <div class="toggle-btn" id="toggle-leitor" onclick="alternarLeitor()"></div>
+                </div>
+            </div>
+            
+            <div class="acessibilidade-opcao">
+                <h3>Libras</h3>
+                <div class="acessibilidade-toggle">
+                    <span>Ativar VLibras</span>
+                    <div class="toggle-btn" id="toggle-libras" onclick="alternarLibras()"></div>
+                </div>
+            </div>
+            
+            <div class="acessibilidade-opcao">
+                <h3>Outras Opções</h3>
+                <div class="acessibilidade-botoes">
+                    <button class="acessibilidade-btn" onclick="reduzirAnimacoes()">Reduzir Animações</button>
+                    <button class="acessibilidade-btn" onclick="cursorGrande()">Cursor Grande</button>
+                    <button class="acessibilidade-btn" onclick="atalhosTeclado()">Atalhos de Teclado</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Janela de Boas-Vindas -->
+    <div class="janela-boas-vindas" id="janela-boas-vindas">
+        <div class="title-bar">
+            <div class="window-title">
+                <img class="window-icon" src="https://cdn-icons-png.flaticon.com/512/3522/3522735.png" alt="Acessibilidade">
+                <span>Bem-vindo ao Parque Lagoa do Guapé</span>
+            </div>
+            <div class="window-controls">
+                <div class="window-control">0</div>
+                <div class="window-control">1</div>
+                <div class="window-control close-btn" onclick="fecharBoasVindas()">r</div>
+            </div>
+        </div>
+        <div class="boas-vindas-content">
+            <h2>Recursos de Acessibilidade Disponíveis</h2>
+            <p>Nosso site foi desenvolvido para ser acessível a todos. Confira os recursos disponíveis:</p>
+            
+            <div class="icone-acessibilidade">
+                <img src="https://cdn-icons-png.flaticon.com/512/3522/3522735.png" alt="Acessibilidade">
+            </div>
+            
+            <div class="dica-teclado">
+                <h4>Como acessar os recursos:</h4>
+                <ul>
+                    <li><strong>Botão flutuante:</strong> Clique no ícone verde no canto inferior direito</li>
+                    <li><strong>Atalhos de teclado:</strong>
+                        <ul>
+                            <li><kbd>Ctrl</kbd> + <kbd>A</kbd> - Abrir painel de acessibilidade</li>
+                            <li><kbd>Ctrl</kbd> + <kbd>L</kbd> - Ativar/desativar leitor de texto</li>
+                            <li><kbd>Ctrl</kbd> + <kbd>C</kbd> - Ativar/desativar alto contraste</li>
+                            <li><kbd>Ctrl</kbd> + <kbd>F</kbd> - Aumentar fonte</li>
+                            <li><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>F</kbd> - Diminuir fonte</li>
+                        </ul>
+                    </li>
+                    <li><strong>Ícone na área de trabalho:</strong> Clique no ícone "Acessibilidade"</li>
+                </ul>
+            </div>
+            
+            <p>Explore o parque virtual e descubra as maravilhas da Mata Atlântica!</p>
+            
+            <div class="action-buttons" style="justify-content: center; margin-top: 20px;">
+                <button class="xp-button" onclick="fecharBoasVindas()" style="padding: 8px 20px;">Começar Explorar</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Área de trabalho com ícones -->
     <div class="desktop">
         <div class="desktop-icons">
@@ -659,11 +1046,11 @@
                 </div>
                 <span>Quiz</span>
             </div>
-            <div class="desktop-icon" onclick="openWindow('admin-window')">
+            <div class="desktop-icon" onclick="openWindow('acessibilidade-window')">
                 <div class="desktop-icon-image">
-                    <img src="https://cdn-icons-png.flaticon.com/512/2910/2910768.png" alt="Admin">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3522/3522735.png" alt="Acessibilidade">
                 </div>
-                <span>Admin</span>
+                <span>Acessibilidade</span>
             </div>
         </div>
 
@@ -726,7 +1113,7 @@
             </div>
         </div>
 
-        <!-- Janela das Árvores (conteúdo será carregado pelo Firebase) -->
+        <!-- Janela das Árvores -->
         <div id="arvores-window" class="window" style="top: 120px; left: 200px; width: 650px; height: 500px;">
             <div class="title-bar">
                 <div class="window-title">
@@ -756,9 +1143,20 @@
                 <p class="sub-text" style="margin-bottom: 15px;">Clique nas árvores para ver sua descrição e acessar o QR Code!</p>
                 
                 <div class="arvores-container" id="arvoresContainer">
-                    <!-- Conteúdo será carregado pelo Firebase -->
-                    <div style="text-align: center; padding: 20px;">
-                        <p>Carregando árvores do parque...</p>
+                    <div class="arvore-item" onclick="mostrarDetalhesArvore({nome: 'Ipê Amarelo', especie: 'Handroanthus chrysotrichus', descricao: 'Árvore nativa conhecida por sua bela floração amarela no inverno.'})">
+                        <img src="https://cdn-icons-png.flaticon.com/512/2908/2908908.png" alt="Ipê Amarelo">
+                        <h3>Ipê Amarelo</h3>
+                        <p>Handroanthus chrysotrichus</p>
+                    </div>
+                    <div class="arvore-item" onclick="mostrarDetalhesArvore({nome: 'Figueira', especie: 'Ficus organensis', descricao: 'Árvore de grande porte, com raízes tabulares características.'})">
+                        <img src="https://cdn-icons-png.flaticon.com/512/2908/2908908.png" alt="Figueira">
+                        <h3>Figueira</h3>
+                        <p>Ficus organensis</p>
+                    </div>
+                    <div class="arvore-item" onclick="mostrarDetalhesArvore({nome: 'Jacarandá', especie: 'Dalbergia nigra', descricao: 'Árvore de madeira nobre, com flores azuis arroxeadas.'})">
+                        <img src="https://cdn-icons-png.flaticon.com/512/2908/2908908.png" alt="Jacarandá">
+                        <h3>Jacarandá</h3>
+                        <p>Dalbergia nigra</p>
                     </div>
                 </div>
             </div>
@@ -803,38 +1201,71 @@
             </div>
         </div>
 
-        <!-- Janela do Admin -->
-        <div id="admin-window" class="window" style="top: 180px; left: 300px; width: 450px; height: 350px;">
+        <!-- Janela de Acessibilidade -->
+        <div id="acessibilidade-window" class="window" style="top: 180px; left: 300px; width: 500px; height: 450px;">
             <div class="title-bar">
                 <div class="window-title">
-                    <img class="window-icon" src="https://cdn-icons-png.flaticon.com/512/2910/2910768.png" alt="Admin Icon">
-                    <span>Área do Administrador</span>
+                    <img class="window-icon" src="https://cdn-icons-png.flaticon.com/512/3522/3522735.png" alt="Acessibilidade Icon">
+                    <span>Central de Acessibilidade</span>
                 </div>
                 <div class="window-controls">
                     <div class="window-control">0</div>
                     <div class="window-control">1</div>
-                    <div class="window-control close-btn" onclick="closeWindow('admin-window')">r</div>
+                    <div class="window-control close-btn" onclick="closeWindow('acessibilidade-window')">r</div>
                 </div>
             </div>
             
             <div class="window-content">
                 <div style="text-align: center; margin-bottom: 20px;">
-                    <h2 style="color:#0a246a;">Acesso Restrito</h2>
-                    <p>Esta área é exclusiva para administradores do parque.</p>
+                    <h2 style="color:#0a246a;">Acessibilidade</h2>
+                    <p>Configure as opções de acessibilidade para melhorar sua experiência.</p>
                 </div>
                 
-                <div class="form-group">
-                    <label for="admin-username">Usuário:</label>
-                    <input type="text" id="admin-username">
-                </div>
-                <div class="form-group">
-                    <label for="admin-password">Senha:</label>
-                    <input type="password" id="admin-password">
-                </div>
-                
-                <div class="action-buttons">
-                    <button class="xp-button" onclick="alert('Login realizado!')">Entrar</button>
-                    <button class="xp-button" onclick="closeWindow('admin-window')">Cancelar</button>
+                <div class="acessibilidade-content">
+                    <div class="acessibilidade-opcao">
+                        <h3>Tamanho da Fonte</h3>
+                        <div class="acessibilidade-botoes">
+                            <button class="acessibilidade-btn" onclick="alterarFonte('normal')" id="fonte-normal-win">Normal</button>
+                            <button class="acessibilidade-btn" onclick="alterarFonte('grande')" id="fonte-grande-win">Grande</button>
+                            <button class="acessibilidade-btn" onclick="alterarFonte('muito-grande')" id="fonte-muito-grande-win">Muito Grande</button>
+                        </div>
+                    </div>
+                    
+                    <div class="acessibilidade-opcao">
+                        <h3>Daltonismo</h3>
+                        <div class="acessibilidade-botoes">
+                            <button class="acessibilidade-btn" onclick="alterarDaltonismo('normal')" id="daltonismo-normal-win">Normal</button>
+                            <button class="acessibilidade-btn" onclick="alterarDaltonismo('protanopia')" id="daltonismo-protanopia-win">Protanopia</button>
+                            <button class="acessibilidade-btn" onclick="alterarDaltonismo('deuteranopia')" id="daltonismo-deuteranopia-win">Deuteranopia</button>
+                            <button class="acessibilidade-btn" onclick="alterarDaltonismo('tritanopia')" id="daltonismo-tritanopia-win">Tritanopia</button>
+                        </div>
+                    </div>
+                    
+                    <div class="acessibilidade-opcao">
+                        <h3>Contraste</h3>
+                        <div class="acessibilidade-toggle">
+                            <span>Alto Contraste</span>
+                            <div class="toggle-btn" id="toggle-contraste-win" onclick="alternarContraste()"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="acessibilidade-opcao">
+                        <h3>Leitor de Texto</h3>
+                        <div class="acessibilidade-toggle">
+                            <span>Ativar Leitor</span>
+                            <div class="toggle-btn" id="toggle-leitor-win" onclick="alternarLeitor()"></div>
+                        </div>
+                        <p style="font-size: 11px; margin-top: 5px;">Clique em qualquer texto para ouvi-lo</p>
+                    </div>
+                    
+                    <div class="acessibilidade-opcao">
+                        <h3>Libras</h3>
+                        <div class="acessibilidade-toggle">
+                            <span>Ativar VLibras</span>
+                            <div class="toggle-btn" id="toggle-libras-win" onclick="alternarLibras()"></div>
+                        </div>
+                        <p style="font-size: 11px; margin-top: 5px;">Ativa o tradutor de Libras</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -876,9 +1307,9 @@
                     <span>Quiz</span>
                 </div>
                 <div class="start-menu-item separator"></div>
-                <div class="start-menu-item" onclick="openWindow('admin-window'); hideStartMenu()">
-                    <img src="https://cdn-icons-png.flaticon.com/512/2910/2910768.png" alt="Admin">
-                    <span>Área do Admin</span>
+                <div class="start-menu-item" onclick="openWindow('acessibilidade-window'); hideStartMenu()">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3522/3522735.png" alt="Acessibilidade">
+                    <span>Acessibilidade</span>
                 </div>
             </div>
             <div class="start-menu-right">
@@ -937,53 +1368,240 @@
         </div>
     </div>
 
+    <!-- Script do VLibras (será carregado dinamicamente) -->
+    <div vw class="enabled">
+        <div vw-access-button class="active"></div>
+        <div vw-plugin-wrapper>
+            <div class="vw-plugin-top-wrapper"></div>
+        </div>
+    </div>
+
     <script>
-        // Função para carregar árvores do Firebase
-        async function carregarArvores() {
-            try {
-                const arvoresContainer = document.getElementById('arvoresContainer');
-                
-                // Limpar conteúdo atual
-                arvoresContainer.innerHTML = '<div style="text-align: center; padding: 20px;"><p>Carregando árvores do parque...</p></div>';
-                
-                // Buscar árvores no Firestore
-                const querySnapshot = await db.collection('arvores').get();
-                
-                // Limpar container novamente
-                arvoresContainer.innerHTML = '';
-                
-                if (querySnapshot.empty) {
-                    arvoresContainer.innerHTML = '<div style="text-align: center; padding: 20px;"><p>Nenhuma árvore cadastrada ainda.</p></div>';
-                    return;
+        // Configurações de acessibilidade
+        let leitorAtivo = false;
+        let librasAtivo = false;
+        let altoContraste = false;
+        let tamanhoFonte = 'normal';
+        let tipoDaltonismo = 'normal';
+
+        // Função para fechar a janela de boas-vindas
+        function fecharBoasVindas() {
+            document.getElementById('janela-boas-vindas').style.display = 'none';
+        }
+
+        // Funções de acessibilidade
+        function toggleAcessibilidadePainel() {
+            const painel = document.getElementById('acessibilidade-painel');
+            painel.style.display = painel.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function alterarFonte(tamanho) {
+            // Remover classes anteriores
+            document.body.classList.remove('font-grande', 'font-muito-grande');
+            
+            // Aplicar nova classe
+            if (tamanho === 'grande') {
+                document.body.classList.add('font-grande');
+            } else if (tamanho === 'muito-grande') {
+                document.body.classList.add('font-muito-grande');
+            }
+            
+            // Atualizar estado
+            tamanhoFonte = tamanho;
+            
+            // Atualizar botões ativos
+            document.querySelectorAll('.acessibilidade-btn').forEach(btn => {
+                if (btn.textContent.toLowerCase().includes(tamanho)) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
                 }
-                
-                // Adicionar cada árvore ao container
-                querySnapshot.forEach((doc) => {
-                    const arvore = doc.data();
-                    const arvoreItem = document.createElement('div');
-                    arvoreItem.className = 'arvore-item';
-                    arvoreItem.onclick = () => mostrarDetalhesArvore(arvore);
-                    
-                    arvoreItem.innerHTML = `
-                        <img src="${arvore.imagem || 'https://cdn-icons-png.flaticon.com/512/2908/2908908.png'}" alt="${arvore.nome}">
-                        <h3>${arvore.nome}</h3>
-                        <p>${arvore.especie || 'Espécie nativa'}</p>
-                    `;
-                    
-                    arvoresContainer.appendChild(arvoreItem);
-                });
-            } catch (error) {
-                console.error('Erro ao carregar árvores:', error);
-                document.getElementById('arvoresContainer').innerHTML = 
-                    '<div style="text-align: center; padding: 20px;"><p>Erro ao carregar árvores. Verifique o console.</p></div>';
+            });
+        }
+
+        function alterarDaltonismo(tipo) {
+            // Remover classes anteriores
+            document.body.classList.remove('daltonismo-protanopia', 'daltonismo-deuteranopia', 'daltonismo-tritanopia');
+            
+            // Aplicar nova classe
+            if (tipo !== 'normal') {
+                document.body.classList.add(`daltonismo-${tipo}`);
+            }
+            
+            // Atualizar estado
+            tipoDaltonismo = tipo;
+            
+            // Atualizar botões ativos
+            document.querySelectorAll('.acessibilidade-btn').forEach(btn => {
+                if (btn.id && btn.id.includes(tipo)) {
+                    btn.classList.add('active');
+                } else if (btn.id && btn.id.includes('daltonismo')) {
+                    btn.classList.remove('active');
+                }
+            });
+        }
+
+        function alternarContraste() {
+            const toggle = document.getElementById('toggle-contraste');
+            const toggleWin = document.getElementById('toggle-contraste-win');
+            
+            altoContraste = !altoContraste;
+            
+            if (altoContraste) {
+                document.body.classList.add('alto-contraste');
+                toggle.classList.add('ativo');
+                toggleWin.classList.add('ativo');
+            } else {
+                document.body.classList.remove('alto-contraste');
+                toggle.classList.remove('ativo');
+                toggleWin.classList.remove('ativo');
             }
         }
-        
+
+        function alternarLeitor() {
+            const toggle = document.getElementById('toggle-leitor');
+            const toggleWin = document.getElementById('toggle-leitor-win');
+            const indicador = document.getElementById('leitor-ativo');
+            
+            leitorAtivo = !leitorAtivo;
+            
+            if (leitorAtivo) {
+                toggle.classList.add('ativo');
+                toggleWin.classList.add('ativo');
+                indicador.style.display = 'block';
+                
+                // Adicionar eventos de clique para leitura
+                document.addEventListener('click', lerTexto);
+            } else {
+                toggle.classList.remove('ativo');
+                toggleWin.classList.remove('ativo');
+                indicador.style.display = 'none';
+                
+                // Remover eventos de clique
+                document.removeEventListener('click', lerTexto);
+            }
+        }
+
+        function lerTexto(event) {
+            if (leitorAtivo && event.target.textContent && !event.target.classList.contains('window-control')) {
+                const texto = event.target.textContent.trim();
+                if (texto.length > 0) {
+                    // Usar a Web Speech API para ler o texto
+                    if ('speechSynthesis' in window) {
+                        const utterance = new SpeechSynthesisUtterance(texto);
+                        utterance.lang = 'pt-BR';
+                        speechSynthesis.speak(utterance);
+                    } else {
+                        alert('Seu navegador não suporta leitura de texto. Tente usar Chrome, Edge ou Safari.');
+                    }
+                }
+            }
+        }
+
+        function alternarLibras() {
+            const toggle = document.getElementById('toggle-libras');
+            const toggleWin = document.getElementById('toggle-libras-win');
+            
+            librasAtivo = !librasAtivo;
+            
+            if (librasAtivo) {
+                toggle.classList.add('ativo');
+                toggleWin.classList.add('ativo');
+                carregarVLibras();
+            } else {
+                toggle.classList.remove('ativo');
+                toggleWin.classList.remove('ativo');
+                // Remover VLibras
+                if (window.vlibras) {
+                    document.querySelectorAll('[vw]').forEach(el => el.remove());
+                }
+            }
+        }
+
+        function carregarVLibras() {
+            // Carregar o widget VLibras
+            const script = document.createElement('script');
+            script.src = 'https://vlibras.gov.br/app/vlibras-plugin.js';
+            script.onload = function() {
+                new window.VLibras.Widget('https://vlibras.gov.br/app');
+            };
+            document.head.appendChild(script);
+        }
+
+        function reduzirAnimacoes() {
+            alert('As animações foram reduzidas. Recarregue a página para restaurar.');
+            // Aqui você implementaria a lógica para desativar animações CSS
+        }
+
+        function cursorGrande() {
+            document.body.style.cursor = 'url(https://cdn-icons-png.flaticon.com/512/66/66891.png), auto';
+            alert('Cursor grande ativado. Recarregue a página para voltar ao normal.');
+        }
+
+        function atalhosTeclado() {
+            alert('Atalhos de teclado:\n\n' +
+                  'Ctrl + A - Abrir painel de acessibilidade\n' +
+                  'Ctrl + L - Ativar/desativar leitor de texto\n' +
+                  'Ctrl + C - Ativar/desativar alto contraste\n' +
+                  'Ctrl + D - Abrir janela de daltonismo\n' +
+                  'Ctrl + F - Aumentar fonte\n' +
+                  'Ctrl + Shift + F - Diminuir fonte');
+        }
+
+        // Adicionar atalhos de teclado
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey) {
+                switch(e.key) {
+                    case 'a':
+                    case 'A':
+                        e.preventDefault();
+                        toggleAcessibilidadePainel();
+                        break;
+                    case 'l':
+                    case 'L':
+                        e.preventDefault();
+                        alternarLeitor();
+                        break;
+                    case 'c':
+                    case 'C':
+                        e.preventDefault();
+                        alternarContraste();
+                        break;
+                    case 'd':
+                    case 'D':
+                        e.preventDefault();
+                        openWindow('acessibilidade-window');
+                        break;
+                    case 'f':
+                    case 'F':
+                        e.preventDefault();
+                        if (e.shiftKey) {
+                            alterarFonte('normal');
+                        } else {
+                            if (tamanhoFonte === 'normal') {
+                                alterarFonte('grande');
+                            } else if (tamanhoFonte === 'grande') {
+                                alterarFonte('muito-grande');
+                            }
+                        }
+                        break;
+                }
+            }
+        });
+
         // Função para mostrar detalhes da árvore
         function mostrarDetalhesArvore(arvore) {
-            alert(`Detalhes da ${arvore.nome}:\n\nEspécie: ${arvore.especie || 'Não informada'}\nDescrição: ${arvore.descricao || 'Sem descrição'}`);
+            const mensagem = `Detalhes da ${arvore.nome}:\n\nEspécie: ${arvore.especie}\n\nDescrição: ${arvore.descricao}`;
+            
+            if (leitorAtivo && 'speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(mensagem);
+                utterance.lang = 'pt-BR';
+                speechSynthesis.speak(utterance);
+            }
+            
+            alert(mensagem);
         }
-        
+
         // Relógio na barra de tarefas
         function updateClock() {
             const now = new Date();
@@ -1010,11 +1628,6 @@
             
             hideStartMenu();
             makeWindowDraggable(windowId);
-            
-            // Se for a janela de árvores, carregar dados do Firebase
-            if (windowId === 'arvores-window') {
-                carregarArvores();
-            }
         }
 
         function closeWindow(windowId) {
@@ -1108,10 +1721,21 @@
             updateClock();
             setInterval(updateClock, 60000);
             
-            openWindow('parque-window');
+            // A janela de boas-vindas já está visível por padrão
+            // openWindow('parque-window');
             
             document.querySelectorAll('.window').forEach(window => {
                 makeWindowDraggable(window.id);
+            });
+            
+            // Ativar botão de fonte normal por padrão
+            document.querySelectorAll('.acessibilidade-btn').forEach(btn => {
+                if (btn.textContent === 'Normal' && btn.id.includes('fonte')) {
+                    btn.classList.add('active');
+                }
+                if (btn.textContent === 'Normal' && btn.id.includes('daltonismo')) {
+                    btn.classList.add('active');
+                }
             });
         });
     </script>
